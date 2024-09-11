@@ -2,6 +2,26 @@
 
 This is the backend of the Job Application platform, which provides APIs to manage job posts, applications, and user authentication. It uses **Node.js**, **Express**, **Prisma**, and **PostgreSQL**.
 
+## Create a recruiter account
+
+1. Using postman create a new account.
+
+- URL: http://localhost:3000/api/users/register
+- Method: POST
+- Headers: Content-Type: application/json
+- Body: name, email, password
+- User role: recruiter
+
+```bash
+{
+    "name": "Jon",
+    "email":"jon_222@mail.ru",
+    "password":"123",
+    "role":"recruiter"
+}
+
+```
+
 ## Features
 
 - User authentication (JWT-based)
@@ -35,6 +55,7 @@ This is the backend of the Job Application platform, which provides APIs to mana
    npm run dev
 
    ```
+
 ## environment variables
 
 - DATABASE_URL="postgresql://nazim:nzmai@localhost:5432/jobplatform"
