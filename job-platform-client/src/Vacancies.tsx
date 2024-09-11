@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
-import { Button, Modal, Form, Input, Upload, Table } from "antd";
+import { Button, Modal, Form, Input, Upload, Card, Row, Col } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useQuery, useMutation, useQueryClient } from "react-query";
+import "./Vacancies.css"; // Add custom styles if needed
 import { apiClient } from "./api/aixos";
 
 interface JobPost {
@@ -23,11 +23,15 @@ export const Vacancies: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<JobPost | null>(null);
   const [form] = Form.useForm();
 
+  const userName = localStorage.getItem("userName") || "";
+  const userEmail = localStorage.getItem("email") || "";
+
   const queryClient = useQueryClient();
 
   const { data: jobPosts, isLoading } = useQuery("jobposts", fetchJobPosts);
 
   const mutation = useMutation(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (applicationData: any) =>
       apiClient.post(
         `/api/jobs/jobposts/${selectedJob?.id}/applications`,
@@ -43,6 +47,10 @@ export const Vacancies: React.FC = () => {
   );
 
   const showApplyModal = (job: JobPost) => {
+    form.setFieldsValue({
+      applicantName: userName,
+      applicantEmail: userEmail,
+    });
     setSelectedJob(job);
     setIsModalVisible(true);
   };
@@ -74,36 +82,38 @@ export const Vacancies: React.FC = () => {
   if (isLoading) return <p>Loading vacancies...</p>;
 
   return (
-    <div>
-      <h1>Available Vacancies</h1>
-      <Table dataSource={jobPosts} rowKey="id">
-        <Table.Column title="Title" dataIndex="title" key="title" />
-        <Table.Column
-          title="Description"
-          dataIndex="description"
-          key="description"
-        />
-        <Table.Column
-          title="Salary Range"
-          dataIndex="salaryRange"
-          key="salaryRange"
-        />
-        <Table.Column title="Location" dataIndex="location" key="location" />
-        <Table.Column
-          title="Actions"
-          key="actions"
-          render={(_, record: JobPost) => (
-            <Button type="primary" onClick={() => showApplyModal(record)}>
-              Apply
-            </Button>
-          )}
-        />
-      </Table>
+    <div className="job-posts-container">
+      <h1 className="job-posts-title">Available Vacancies</h1>
+      <Row gutter={[16, 16]}>
+        {jobPosts.map((job: JobPost) => (
+          <Col xs={24} sm={12} md={8} lg={6} key={job.id}>
+            <Card
+              className="job-card"
+              title={job.title}
+              bordered={false}
+              actions={[
+                <Button type="primary" onClick={() => showApplyModal(job)}>
+                  Apply
+                </Button>,
+              ]}
+            >
+              <p>
+                <strong>Description:</strong> {job.description}
+              </p>
+              <p>
+                <strong>Salary:</strong> {job.salaryRange}
+              </p>
+              <p>
+                <strong>Location:</strong> {job.location}
+              </p>
+            </Card>
+          </Col>
+        ))}
+      </Row>
 
-      {/* Modal for Applying */}
       <Modal
         title={`Apply for ${selectedJob?.title}`}
-        visible={isModalVisible}
+        open={isModalVisible}
         onCancel={handleCancel}
         onOk={() => form.submit()}
       >
