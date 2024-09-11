@@ -39,12 +39,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <AntLayout>
       <Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        {/* Logo or Branding */}
         <div style={{ color: 'white', fontWeight: 'bold', fontSize: '20px' }}>
           Recruiter Dashboard
         </div>
-
-        {/* User Info (Avatar and Name) */}
         <Dropdown overlay={menu} trigger={['click']}>
           <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
             <Avatar src={avatarUrl} icon={<UserOutlined />} style={{ marginRight: '8px' }} />
@@ -52,7 +49,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           </div>
         </Dropdown>
       </Header>
-      <Content style={{ padding: '20px' }}>
+      <Content>
         {children}
       </Content>
     </AntLayout>

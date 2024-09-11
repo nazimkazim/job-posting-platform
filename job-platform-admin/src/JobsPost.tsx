@@ -110,7 +110,7 @@ export const JobPosts: React.FC = () => {
           Add Job Post
         </Button>
       </Space>
-      <Table dataSource={jobPosts} rowKey="id" pagination={false}>
+      <Table className="job-posts-table" dataSource={jobPosts} rowKey="id" pagination={false}>
         <Table.Column title="Title" dataIndex="title" key="title" />
         <Table.Column
           title="Description"

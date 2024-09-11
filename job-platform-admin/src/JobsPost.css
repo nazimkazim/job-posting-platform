@@ -1,10 +1,27 @@
 .job-posts-container {
-    max-width: 100vw;
-    height: 100vh;
+    min-width: 100%;
+    min-height: 100vh;
     padding: 200px;
     margin: auto;
 }
 
+.job-posts-table {
+    width: 100%;
+}
+
 .add-job {
     margin-bottom: 20px;
+}
+
+@media screen and (max-width: 768px) {
+    .job-posts-container {
+        padding: 16px;
+    }
+
+    .job-posts-table {
+        font-size: 12px;
+        background-color: white;
+        overflow: auto;
+    }
+    
 }
