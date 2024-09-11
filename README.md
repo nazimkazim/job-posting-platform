@@ -35,7 +35,10 @@ This is the backend of the Job Application platform, which provides APIs to mana
    npm run dev
 
    ```
+## environment variables
 
+- DATABASE_URL="postgresql://nazim:nzmai@localhost:5432/jobplatform"
+- JWT_SECRET="secret"
 
 # Job Application Client
 
@@ -62,6 +65,10 @@ npm run dev
 
 ```
 
+## environment variables
+
+VITE_BACKEND_URL=http://localhost:3000
+
 # Job Application Admin Dashboard
 
 This is the admin dashboard of the Job Application platform, where recruiters can manage their job posts and view applications. It uses **React**, **Ant Design**, **React Query**, and **Axios** for API calls.
@@ -87,3 +94,7 @@ npm install
 npm run dev
 
 ```
+
+## environment variables
+
+VITE_BACKEND_URL=http://localhost:3000
