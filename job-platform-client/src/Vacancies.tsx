@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Modal, Form, Input, Upload, Card, Row, Col } from "antd";
+import { Button, Modal, Form, Input, Upload, Card, Row, Col, Spin } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import "./Vacancies.css"; // Add custom styles if needed
@@ -79,7 +79,7 @@ export const Vacancies: React.FC = () => {
     form.resetFields();
   };
 
-  if (isLoading) return <p>Loading vacancies...</p>;
+  if (isLoading) return <Spin />;
 
   return (
     <div className="job-posts-container">

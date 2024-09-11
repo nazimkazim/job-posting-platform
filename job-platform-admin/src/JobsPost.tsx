@@ -106,7 +106,7 @@ export const JobPosts: React.FC = () => {
   return (
     <div className="job-posts-container">
       <Space>
-        <Button type="primary" onClick={() => showModal()}>
+        <Button className="add-job" type="primary" onClick={() => showModal()}>
           Add Job Post
         </Button>
       </Space>
