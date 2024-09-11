@@ -52,6 +52,8 @@ This is the job seeker client interface for the Job Application platform. Job se
 
 - Node.js (v14 or later)
 
+## Installation and Usage
+
 ```bash
 
 npm install
@@ -75,6 +77,8 @@ This is the admin dashboard of the Job Application platform, where recruiters ca
 ## Prerequisites
 
 - Node.js (v14 or later)
+
+## Installation and Usage
 
 ```bash
 
