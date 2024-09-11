@@ -19,16 +19,14 @@ const authenticate = (req: Request, res: Response, next: NextFunction) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || "secret");
 
-    // Check if the decoded value is an object (JwtPayload) and not a string
     if (
       typeof decoded === "object" &&
       decoded !== null &&
       "userId" in decoded
     ) {
-      req.user = decoded as { userId: number } & JwtPayload; // Type assertion for userId
+      req.user = decoded as { userId: number } & JwtPayload;
       next();
     } else {
-      // If it's a string or doesn't contain userId, respond with an error
       return res.status(403).json({ error: "Invalid token payload" });
     }
   } catch (error) {
@@ -110,11 +108,17 @@ app.put("/jobposts/:id", authenticate, async (req: Request, res: Response) => {
 app.delete("/jobposts/:id", authenticate, async (req, res) => {
   const { id } = req.params;
 
+  console.log({req: req?.user?.userId});
+
   const jobPost = await prisma.jobPost.findUnique({
     where: { id: Number(id) },
   });
+  console.log({jobPost});
 
-  if (jobPost?.recruiterId !== req?.user?.userId) {
+  console.log(jobPost?.recruiterId === Number(req?.user?.userId))
+
+  if (jobPost?.recruiterId !== Number(req?.user?.userId)) {
+    console.log("here");
     return res
       .status(403)
       .json({ error: "You do not have permission to delete this post" });
@@ -126,7 +130,6 @@ app.delete("/jobposts/:id", authenticate, async (req, res) => {
 });
 
 app.get("/jobposts", async (req, res) => {
-  // Extract and cast title and location from req.query
   const {
     title,
     location,
