@@ -42,6 +42,9 @@ export const JobPosts: React.FC = () => {
   const [isApplicantsModalOpen, setIsApplicantsModalOpen] = useState(false);
   const [applications, setApplications] = useState<Application[]>([]);
 
+  const role = localStorage.getItem("role");
+  const isRecruiter = role === "recruiter";
+
   const [form] = Form.useForm();
 
   const handleViewApplications = async (jobPostId: number) => {
@@ -136,7 +139,7 @@ export const JobPosts: React.FC = () => {
             </Button>
           }}
         />
-        <Table.Column
+        { isRecruiter && <Table.Column
           title="Actions"
           key="actions"
           render={(_text: string, record: JobPost) => (
@@ -150,7 +153,7 @@ export const JobPosts: React.FC = () => {
               </Popconfirm>
             </Space>
           )}
-        />
+        />}
       </Table>
 
       <Modal

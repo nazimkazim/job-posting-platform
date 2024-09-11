@@ -22,11 +22,13 @@ export const Login: React.FC = () => {
       const userName = response?.data?.name;
       const email = response?.data?.email;
       const avatarUrl = response?.data?.user?.avatar || "";
+      const role = response?.data?.role || "";
 
       localStorage.setItem("token", token);
       localStorage.setItem("userName", userName);
       localStorage.setItem("avatarUrl", avatarUrl);
       localStorage.setItem("email", email);
+      localStorage.setItem("role", role);
 
       navigate("/jobs");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

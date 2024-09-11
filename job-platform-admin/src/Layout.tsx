@@ -23,6 +23,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
     localStorage.removeItem('avatarUrl');
+    localStorage.removeItem('email');
+    localStorage.removeItem('role');
     navigate('/');
   };
 

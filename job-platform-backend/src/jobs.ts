@@ -34,7 +34,35 @@ const authenticate = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-app.get('/jobposts/:id', async (req: Request, res: Response) => {
+const allowDeleteAndUpdateForRecruiter = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const token = req?.header("Authorization")?.replace("Bearer ", "");
+
+  if (!token) return res.status(401).json({ error: "Unauthorized" });
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "secret");
+
+    if (
+      typeof decoded === "object" &&
+      decoded !== null &&
+      "userId" in decoded &&
+      decoded.userId === req?.user?.userId &&
+      decoded.role === "recruiter"
+    ) {
+      next();
+    } else {
+      return res.status(403).json({ error: "Invalid token payload" });
+    }
+  } catch (error) {
+    res.status(403).json({ error: "Invalid token" });
+  }
+};
+
+app.get("/jobposts/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
@@ -45,16 +73,15 @@ app.get('/jobposts/:id', async (req: Request, res: Response) => {
 
     // If job post is not found, return 404
     if (!jobPost) {
-      return res.status(404).json({ error: 'Job post not found' });
+      return res.status(404).json({ error: "Job post not found" });
     }
 
     // Return the job post details
     res.json(jobPost);
   } catch (error) {
-    res.status(500).json({ error: 'Error fetching job post' });
+    res.status(500).json({ error: "Error fetching job post" });
   }
 });
-
 
 app.post("/jobposts", authenticate, async (req, res) => {
   const { title, description, salaryRange, location } = req.body;
@@ -72,7 +99,7 @@ app.post("/jobposts", authenticate, async (req, res) => {
         description,
         salaryRange,
         location,
-        recruiterId,  // Now guaranteed to be a number
+        recruiterId, // Now guaranteed to be a number
       },
     });
 
@@ -82,40 +109,44 @@ app.post("/jobposts", authenticate, async (req, res) => {
   }
 });
 
+app.put(
+  "/jobposts/:id",
+  authenticate,
+  allowDeleteAndUpdateForRecruiter,
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { title, description, salaryRange, location } = req.body;
 
-app.put("/jobposts/:id", authenticate, async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { title, description, salaryRange, location } = req.body;
+    const jobPost = await prisma?.jobPost?.findUnique({
+      where: { id: Number(id) },
+    });
 
-  const jobPost = await prisma?.jobPost?.findUnique({
-    where: { id: Number(id) },
-  });
+    if (jobPost?.recruiterId !== req?.user?.userId) {
+      return res
+        .status(403)
+        .json({ error: "You do not have permission to update this post" });
+    }
 
-  if (jobPost?.recruiterId !== req?.user?.userId) {
-    return res
-      .status(403)
-      .json({ error: "You do not have permission to update this post" });
+    const updatedJobPost = await prisma.jobPost.update({
+      where: { id: Number(id) },
+      data: { title, description, salaryRange, location },
+    });
+
+    res.json(updatedJobPost);
   }
+);
 
-  const updatedJobPost = await prisma.jobPost.update({
-    where: { id: Number(id) },
-    data: { title, description, salaryRange, location },
-  });
-
-  res.json(updatedJobPost);
-});
-
-app.delete("/jobposts/:id", authenticate, async (req, res) => {
+app.delete("/jobposts/:id", authenticate, allowDeleteAndUpdateForRecruiter, async (req, res) => {
   const { id } = req.params;
 
-  console.log({req: req?.user?.userId});
+  console.log({ req: req?.user?.userId });
 
   const jobPost = await prisma.jobPost.findUnique({
     where: { id: Number(id) },
   });
-  console.log({jobPost});
+  console.log({ jobPost });
 
-  console.log(jobPost?.recruiterId === Number(req?.user?.userId))
+  console.log(jobPost?.recruiterId === Number(req?.user?.userId));
 
   if (jobPost?.recruiterId !== Number(req?.user?.userId)) {
     console.log("here");
@@ -219,28 +250,29 @@ app.get("/jobposts/:id/applications", authenticate, async (req, res) => {
   res.json(applications);
 });
 
-app.post('/jobposts/:id/applications', upload.single('resume'), async (req, res) => {
-  const { id } = req.params;
-  const { applicantName, applicantEmail, coverLetter } = req.body;
-  
-  try {
-    const application = await prisma.application.create({
-      data: {
-        applicantName,
-        applicantEmail,
-        coverLetter,
-        resumePath: req?.file?.path || '',
-        jobPostId: Number(id),
-      },
-    });
+app.post(
+  "/jobposts/:id/applications",
+  upload.single("resume"),
+  async (req, res) => {
+    const { id } = req.params;
+    const { applicantName, applicantEmail, coverLetter } = req.body;
 
-    res.json(application);
-  } catch (error) {
-    res.status(500).json({ error: 'Error submitting application' });
+    try {
+      const application = await prisma.application.create({
+        data: {
+          applicantName,
+          applicantEmail,
+          coverLetter,
+          resumePath: req?.file?.path || "",
+          jobPostId: Number(id),
+        },
+      });
+
+      res.json(application);
+    } catch (error) {
+      res.status(500).json({ error: "Error submitting application" });
+    }
   }
-});
-
+);
 
 export default app;
-
-
