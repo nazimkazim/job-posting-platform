@@ -35,3 +35,35 @@ This is the backend of the Job Application platform, which provides APIs to mana
    npm run dev
 
    ```
+
+
+# Job Application Client
+
+This is the job seeker client interface for the Job Application platform. Job seekers can view available job posts and apply for them. It uses **React**, **Ant Design**, **React Query**, and **Axios** for API calls.
+
+## Features
+
+- View available job posts
+- Apply for a job with a form that includes name, email, cover letter, and resume upload
+- Responsive design using Ant Design
+- React Query for data fetching and caching
+
+## Prerequisites
+
+- Node.js (v14 or later)
+
+# Job Application Admin Dashboard
+
+This is the admin dashboard of the Job Application platform, where recruiters can manage their job posts and view applications. It uses **React**, **Ant Design**, **React Query**, and **Axios** for API calls.
+
+## Features
+
+- View all job posts
+- Create, edit, delete job posts
+- View applications for each job post
+- Responsive design using Ant Design
+- React Query for data fetching and caching
+
+## Prerequisites
+
+- Node.js (v14 or later)

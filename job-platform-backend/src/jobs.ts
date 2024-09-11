@@ -144,11 +144,9 @@ app.get("/jobposts", async (req, res) => {
     location?: { contains: string };
   };
 
-  // Only add filters if title and location exist as strings
   if (title) filters.title = { contains: title };
   if (location) filters.location = { contains: location };
 
-  // Convert page and pageSize to numbers (they might come in as strings from req.query)
   const pageNumber = Number(page);
   const pageSizeNumber = Number(pageSize);
 

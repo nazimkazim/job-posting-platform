@@ -24,7 +24,7 @@ app.post("/register", async (req: Request, res: Response) => {
         role: role || "recruiter",
       },
     });
-    // Generate a token and respond with user data
+    
     const token = jwt.sign(
       { userId: newUser.id },
       process.env.JWT_SECRET as string,
