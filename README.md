@@ -52,6 +52,14 @@ This is the job seeker client interface for the Job Application platform. Job se
 
 - Node.js (v14 or later)
 
+```bash
+
+npm install
+
+npm run dev
+
+```
+
 # Job Application Admin Dashboard
 
 This is the admin dashboard of the Job Application platform, where recruiters can manage their job posts and view applications. It uses **React**, **Ant Design**, **React Query**, and **Axios** for API calls.
@@ -67,3 +75,11 @@ This is the admin dashboard of the Job Application platform, where recruiters ca
 ## Prerequisites
 
 - Node.js (v14 or later)
+
+```bash
+
+npm install
+
+npm run dev
+
+```
