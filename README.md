@@ -2,6 +2,12 @@
 
 This is the backend of the Job Application platform, which provides APIs to manage job posts, applications, and user authentication. It uses **Node.js**, **Express**, **Prisma**, and **PostgreSQL**.
 
+## How to run the server
+
+```bash
+npx ts-node-dev --files --respawn src/server.ts
+```
+
 ## Create a recruiter account
 
 1. Using postman create a new account.

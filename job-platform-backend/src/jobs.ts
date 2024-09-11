@@ -139,17 +139,11 @@ app.put(
 app.delete("/jobposts/:id", authenticate, allowDeleteAndUpdateForRecruiter, async (req, res) => {
   const { id } = req.params;
 
-  console.log({ req: req?.user?.userId });
-
   const jobPost = await prisma.jobPost.findUnique({
     where: { id: Number(id) },
   });
-  console.log({ jobPost });
-
-  console.log(jobPost?.recruiterId === Number(req?.user?.userId));
 
   if (jobPost?.recruiterId !== Number(req?.user?.userId)) {
-    console.log("here");
     return res
       .status(403)
       .json({ error: "You do not have permission to delete this post" });

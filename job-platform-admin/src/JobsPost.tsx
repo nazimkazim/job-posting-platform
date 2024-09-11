@@ -130,7 +130,6 @@ export const JobPosts: React.FC = () => {
           title="Applications"
           key="applications"
           render={(_text: string, record: JobPost) => {
-            console.log(record);
             return <Button
               type="link"
               onClick={() => handleViewApplications(record.id)}
