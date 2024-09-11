@@ -31,11 +31,7 @@ This is the backend of the Job Application platform, which provides APIs to mana
    JWT_SECRET=your_jwt_secret
 
    npx prisma migrate dev
+
+   npm run dev
+
    ```
-
-npm run dev
-
-```
-
-
-```
